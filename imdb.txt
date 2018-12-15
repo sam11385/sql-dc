@@ -1,0 +1,50 @@
+-- How many movies are longer than 3 hours long?
+SELECT * FROM title_basics
+WHERE runtime_minutes > 180
+AND title_type = 'movie'; -- 1751 records returned
+
+-- How many movies came out after the year 2010?
+SELECT * from title_basics
+WHERE start_year > 2010
+AND title_type = 'movie'; -- 131696 records returned
+
+-- What's the imdb ID for "The Dark Knight"
+SELECT * from title_basics
+WHERE primary_title = 'The Dark Knight'; -- tt0468569
+
+-- How many movies that came out after 2000 are both Comedies and Horrors? 
+SELECT * from title_basics
+WHERE genres LIKE '%Comedy%'
+AND genres LIKE '%Horror%'
+AND title_type = 'movie'
+AND start_year > 2000; -- 1969 records returned
+
+-- What are the different kinds of title_types in this table? 
+SELECT DISTINCT title_type
+FROM title_basics; -- short, tvSeries, videoGame, tvSpecial, tvShort, tvMovie, tvEpisode, video, movie, tvMiniSeries
+
+-- Of these title_types, which has the most records? The least records?
+SELECT title_type, COUNT(title_type)
+FROM title_basics
+GROUP BY title_type; -- 656074, 156758, 22434, 14305, 8876, 126393, 3739878, 217185, 505137, 24053, respectively
+
+
+-- How many entries have separate primary_titles and original_titles
+SELECT * FROM title_basics
+WHERE primary_title != original_title; -- 91394
+
+-- How many characters long is the longest title? 
+Select length(primary_title) from title_basics
+order by length(primary_title) desc; -- 408 characters. THIS QUERY TAKES ABOUT A MINUTE ON MY MACHINE!
+
+-- How many titles are either documentaries from the 1800s or Comedies from 2018 that are less than one hour long?
+SELECT * from title_basics
+where genres LIKE '%Documentary%'
+AND start_year < 1900
+OR genres LIKE '%Comedy%'
+AND start_year = 2018
+AND runtime_minutes < 60; -- 17609
+
+-- My favorite title is tt3467114 . Which title is it?
+select * from title_basics 
+where tconst = 'tt3467114'; -- Halo 5: Guardians
